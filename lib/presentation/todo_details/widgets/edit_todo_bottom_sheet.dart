@@ -13,12 +13,10 @@ class EditTodoBottomSheet extends StatefulWidget {
   const EditTodoBottomSheet({super.key, required this.todo});
 
   @override
-  State<EditTodoBottomSheet> createState() =>
-      _EditTodoBottomSheetState();
+  State<EditTodoBottomSheet> createState() => _EditTodoBottomSheetState();
 }
 
-class _EditTodoBottomSheetState
-    extends State<EditTodoBottomSheet> {
+class _EditTodoBottomSheetState extends State<EditTodoBottomSheet> {
   late TextEditingController titleController;
   late TextEditingController descController;
 
@@ -29,10 +27,8 @@ class _EditTodoBottomSheetState
   void initState() {
     super.initState();
 
-    titleController =
-        TextEditingController(text: widget.todo.title);
-    descController =
-        TextEditingController(text: widget.todo.description);
+    titleController = TextEditingController(text: widget.todo.title);
+    descController = TextEditingController(text: widget.todo.description);
 
     titleController.addListener(clearError);
     descController.addListener(clearError);
@@ -66,17 +62,14 @@ class _EditTodoBottomSheetState
         return Container(
           decoration: BoxDecoration(
             color: AppColors.lightPink,
-            borderRadius:
-            const BorderRadius.vertical(top: Radius.circular(30)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
           ),
           child: Padding(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: SingleChildScrollView(
               controller: scrollController,
               child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: Container(
@@ -84,8 +77,7 @@ class _EditTodoBottomSheetState
                       height: 6,
                       decoration: BoxDecoration(
                         color: Colors.white70,
-                        borderRadius:
-                        BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
@@ -94,23 +86,17 @@ class _EditTodoBottomSheetState
 
                   TextField(
                     controller: titleController,
-                    style:
-                    const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: "Title",
-                      hintStyle: const TextStyle(
-                          color: Colors.white70),
+                      hintStyle: const TextStyle(color: Colors.white70),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(16),
-                        borderSide: const BorderSide(
-                            color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(16),
-                        borderSide: const BorderSide(
-                            color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                     ),
                   ),
@@ -120,23 +106,17 @@ class _EditTodoBottomSheetState
                   TextField(
                     controller: descController,
                     maxLines: 5,
-                    style:
-                    const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       hintText: "Description",
-                      hintStyle: const TextStyle(
-                          color: Colors.white70),
+                      hintStyle: const TextStyle(color: Colors.white70),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(20),
-                        borderSide: const BorderSide(
-                            color: Colors.white),
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.circular(20),
-                        borderSide: const BorderSide(
-                            color: Colors.white),
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: const BorderSide(color: Colors.white),
                       ),
                     ),
                   ),
@@ -160,24 +140,21 @@ class _EditTodoBottomSheetState
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 14),
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
                       decoration: BoxDecoration(
-                        border:
-                        Border.all(color: Colors.white),
-                        borderRadius:
-                        BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             formatDate(selectedDate!),
-                            style: const TextStyle(
-                                color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
-                          SvgPicture.asset(
-                              AppIcons.calender),
+                          SvgPicture.asset(AppIcons.calender),
                         ],
                       ),
                     ),
@@ -187,12 +164,10 @@ class _EditTodoBottomSheetState
 
                   if (errorMessage != null)
                     Padding(
-                      padding:
-                      const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: Text(
                         errorMessage!,
-                        style: const TextStyle(
-                            color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
 
@@ -200,23 +175,17 @@ class _EditTodoBottomSheetState
 
                   GestureDetector(
                     onTap: () async {
-                      final title =
-                      titleController.text.trim();
-                      final desc =
-                      descController.text.trim();
+                      final title = titleController.text.trim();
+                      final desc = descController.text.trim();
 
-                      if (title.isEmpty ||
-                          desc.isEmpty) {
+                      if (title.isEmpty || desc.isEmpty) {
                         setState(() {
-                          errorMessage =
-                          "Please fill all fields";
+                          errorMessage = "Please fill all fields";
                         });
                         return;
                       }
 
-                      await context
-                          .read<TodoCubit>()
-                          .updateTodo(
+                      await context.read<TodoCubit>().updateTodo(
                         widget.todo.id,
                         title,
                         desc,
@@ -225,35 +194,27 @@ class _EditTodoBottomSheetState
 
                       if (mounted) {
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text(
-                                "Todo updated successfully"),
-                            behavior:
-                            SnackBarBehavior.floating,
+                            content: Text("Todo updated successfully"),
+                            behavior: SnackBarBehavior.floating,
                           ),
                         );
                       }
                     },
                     child: Container(
                       width: double.infinity,
-                      padding:
-                      const EdgeInsets.symmetric(
-                          vertical: 16),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       decoration: BoxDecoration(
                         color: AppColors.white,
-                        borderRadius:
-                        BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Center(
                         child: Text(
                           "EDIT TODO",
                           style: TextStyle(
-                            color:
-                            AppColors.lightPink,
-                            fontWeight:
-                            FontWeight.bold,
+                            color: AppColors.lightPink,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

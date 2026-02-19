@@ -75,6 +75,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> logout() async {
+    await repository.logout();
+  }
+
   void listenToAuthChanges() {
     repository.authStateChanges().listen((user) {
       if (user != null) {

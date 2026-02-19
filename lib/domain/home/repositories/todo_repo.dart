@@ -5,11 +5,9 @@ abstract class TodoRepository {
   Stream<List<TodoModel>> getTodos();
   Future<void> deleteTodo(String id);
   Future<void> updateTodo(
-      String id,
-      String title,
-      String description,
-      DateTime date,
-      );
-
-
+    String id,
+    String title,
+    String description,
+    DateTime date,
+  );
 }

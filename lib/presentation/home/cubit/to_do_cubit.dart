@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:to_do_app/data/home/model/to_do_model.dart';
 import 'package:to_do_app/domain/home/repositories/todo_repo.dart';
+
 @injectable
 class TodoCubit extends Cubit<List<TodoModel>> {
   final TodoRepository repository;
@@ -17,17 +18,17 @@ class TodoCubit extends Cubit<List<TodoModel>> {
   Future<void> addTodo(String title, String description) async {
     await repository.addTodo(title, description);
   }
+
   Future<void> deleteTodo(String id) async {
     await repository.deleteTodo(id);
   }
+
   Future<void> updateTodo(
-      String id,
-      String title,
-      String description,
-      DateTime date,
-      ) async {
+    String id,
+    String title,
+    String description,
+    DateTime date,
+  ) async {
     await repository.updateTodo(id, title, description, date);
   }
-
-
 }

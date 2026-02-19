@@ -8,8 +8,8 @@ import 'package:to_do_app/core/utils/app_icons.dart';
 import 'package:to_do_app/core/utils/date_formatter.dart';
 import 'package:to_do_app/data/home/model/to_do_model.dart';
 import 'package:to_do_app/presentation/home/cubit/to_do_cubit.dart';
-import 'package:to_do_app/presentation/widgets/delete_todo_bottom_sheet.dart';
-import 'package:to_do_app/presentation/widgets/edit_todo_bottom_sheet.dart';
+import 'package:to_do_app/presentation/todo_details/widgets/delete_todo_bottom_sheet.dart';
+import 'package:to_do_app/presentation/todo_details/widgets/edit_todo_bottom_sheet.dart';
 
 class TodoDetailScreen extends StatelessWidget {
   const TodoDetailScreen({super.key});
@@ -17,8 +17,7 @@ class TodoDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final todo =
-    ModalRoute.of(context)!.settings.arguments as TodoModel;
+    final todo = ModalRoute.of(context)!.settings.arguments as TodoModel;
 
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
@@ -34,17 +33,13 @@ class TodoDetailScreen extends StatelessWidget {
           );
         }
 
-        final data =
-        snapshot.data!.data() as Map<String, dynamic>?;
+        final data = snapshot.data!.data() as Map<String, dynamic>?;
 
         if (data == null) {
-          return const Scaffold(
-            body: Center(child: Text("Todo deleted")),
-          );
+          return const Scaffold(body: Center(child: Text("Todo deleted")));
         }
 
-        final updatedTodo =
-        TodoModel.fromJson(data, todo.id);
+        final updatedTodo = TodoModel.fromJson(data, todo.id);
 
         return Scaffold(
           backgroundColor: AppColors.primary,
@@ -61,12 +56,13 @@ class TodoDetailScreen extends StatelessWidget {
             ),
             actions: [
               Padding(
-                padding:
-                EdgeInsets.only(right: size.width * 0.04),
+                padding: EdgeInsets.only(right: size.width * 0.04),
                 child: Row(
                   children: [
-                    SvgPicture.asset(AppIcons.clockDark,
-                        width: size.width * 0.05),
+                    SvgPicture.asset(
+                      AppIcons.clockDark,
+                      width: size.width * 0.05,
+                    ),
                     SizedBox(width: size.width * 0.03),
                     GestureDetector(
                       onTap: () {
@@ -74,9 +70,8 @@ class TodoDetailScreen extends StatelessWidget {
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
-                          builder: (_) => EditTodoBottomSheet(
-                            todo: updatedTodo,
-                          ),
+                          builder: (_) =>
+                              EditTodoBottomSheet(todo: updatedTodo),
                         );
                       },
                       child: SvgPicture.asset(
@@ -89,20 +84,17 @@ class TodoDetailScreen extends StatelessWidget {
                       onTap: () {
                         showModalBottomSheet(
                           context: context,
-                          barrierColor:
-                          Colors.black.withOpacity(0.4),
-                          backgroundColor:
-                          Colors.transparent,
-                          builder: (sheetContext) =>
-                              DeleteTodoBottomSheet(
-                                onDelete: () {
-                                  context
-                                      .read<TodoCubit>()
-                                      .deleteTodo(updatedTodo.id);
-                                  Navigator.pop(sheetContext);
-                                  Navigator.pop(context);
-                                },
-                              ),
+                          barrierColor: Colors.black.withOpacity(0.4),
+                          backgroundColor: Colors.transparent,
+                          builder: (sheetContext) => DeleteTodoBottomSheet(
+                            onDelete: () {
+                              context.read<TodoCubit>().deleteTodo(
+                                updatedTodo.id,
+                              );
+                              Navigator.pop(sheetContext);
+                              Navigator.pop(context);
+                            },
+                          ),
                         );
                       },
                       child: SvgPicture.asset(
@@ -122,8 +114,7 @@ class TodoDetailScreen extends StatelessWidget {
                 vertical: size.height * 0.02,
               ),
               child: Column(
-                crossAxisAlignment:
-                CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     updatedTodo.title,
@@ -137,8 +128,7 @@ class TodoDetailScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Text(
                         updatedTodo.description,
-                        style: TextStyle(
-                            fontSize: size.width * 0.04),
+                        style: TextStyle(fontSize: size.width * 0.04),
                       ),
                     ),
                   ),
@@ -146,8 +136,7 @@ class TodoDetailScreen extends StatelessWidget {
                   Center(
                     child: Text(
                       "Created at ${formatDate(updatedTodo.createdAt)}",
-                      style: TextStyle(
-                          fontSize: size.width * 0.035),
+                      style: TextStyle(fontSize: size.width * 0.035),
                     ),
                   ),
                 ],

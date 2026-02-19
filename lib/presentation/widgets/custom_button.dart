@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:to_do_app/core/utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  final Function()?onTap;
+  final Function()? onTap;
   final String text;
-  const CustomButton({super.key,required this.onTap, required this.text});
+  const CustomButton({super.key, required this.onTap, required this.text});
 
   @override
   Widget build(BuildContext context) {

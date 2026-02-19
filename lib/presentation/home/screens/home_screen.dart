@@ -43,7 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SvgPicture.asset(AppIcons.logoIcon),
-                      SvgPicture.asset(AppIcons.profile),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.profile);
+                        },
+                        child: SvgPicture.asset(AppIcons.profile),
+                      ),
                     ],
                   ),
                   SizedBox(height: size.height * 0.05),
@@ -62,7 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 bottom: size.height * 0.02,
                               ),
                               child: GestureDetector(
-                                onTap: () => Navigator.pushNamed(context, AppRoutes.todoDetail,arguments: todo,),
+                                onTap: () => Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.todoDetail,
+                                  arguments: todo,
+                                ),
                                 child: Container(
                                   width: double.infinity,
                                   height: size.height * 0.16,
@@ -77,20 +86,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               todo.title,
                                               style: TextStyle(
                                                 color: AppColors.white,
-                                                fontSize:
-                                                size.width * 0.04,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontSize: size.width * 0.04,
+                                                fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             SvgPicture.asset(
@@ -99,14 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                           ],
                                         ),
-                                        SizedBox(
-                                            height: size.height * 0.01),
+                                        SizedBox(height: size.height * 0.01),
                                         Text(
                                           todo.description,
                                           style: TextStyle(
                                             color: AppColors.white,
-                                            fontSize:
-                                            size.width * 0.035,
+                                            fontSize: size.width * 0.035,
                                           ),
                                         ),
                                         Spacer(),
@@ -114,8 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           "Created at ${formatDate(todo.createdAt)}",
                                           style: TextStyle(
                                             color: AppColors.white,
-                                            fontSize:
-                                            size.width * 0.03,
+                                            fontSize: size.width * 0.03,
                                           ),
                                         ),
                                       ],
@@ -127,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         );
                       },
-
                     ),
                   ),
                 ],
@@ -142,22 +145,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 SvgPicture.asset(AppIcons.circle),
                 SizedBox(height: 12),
                 GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (_) => AddTodoBottomSheet(),
-                      );
-
-                    },
-                    child: SvgPicture.asset(AppIcons.plus)),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => AddTodoBottomSheet(),
+                    );
+                  },
+                  child: SvgPicture.asset(AppIcons.plus),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
-
   }
 }

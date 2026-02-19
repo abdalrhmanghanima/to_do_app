@@ -1,4 +1,4 @@
-class AppIcons{
+class AppIcons {
   static const String toDoList = 'assets/icons/toDoListIcon.svg';
   static const String logoIcon = 'assets/icons/logo_icon.svg';
   static const String profile = 'assets/icons/Profile.svg';
@@ -10,5 +10,8 @@ class AppIcons{
   static const String clockDark = 'assets/icons/clock_dark.svg';
   static const String calender = 'assets/icons/calendar.svg';
   static const String image = 'assets/icons/image.svg';
+}
 
+class AppImages {
+  static const String profileLogo = 'assets/images/profileLogo.png';
 }

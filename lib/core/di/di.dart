@@ -13,12 +13,9 @@ Future<void> configureDependencies() async {
 
 @module
 abstract class RegisterModule {
+  @lazySingleton
+  FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
 
   @lazySingleton
-  FirebaseAuth get firebaseAuth =>
-      FirebaseAuth.instance;
-
-  @lazySingleton
-  FirebaseFirestore get firestore =>
-      FirebaseFirestore.instance;
+  FirebaseFirestore get firestore => FirebaseFirestore.instance;
 }

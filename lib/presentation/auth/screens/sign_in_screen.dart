@@ -53,15 +53,14 @@ class _SignInScreenState extends State<SignInScreen> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
           if (state is Authenticated) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.homeScreen,
-                  (route) => false,
-            );
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.homeScreen, (route) => false);
           }
         },
         builder: (context, state) {
@@ -115,20 +114,19 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: state is AuthLoading
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
-                    onTap: () {
-                      if (emailController.text.isEmpty ||
-                          passController.text.isEmpty) {
-
-                        showError(context, "Email and password required");
-                        return;
-                      }
-                      context.read<AuthCubit>().login(
-                        emailController.text.trim(),
-                        passController.text.trim(),
-                      );
-                    },
-                    text: 'SIGN IN',
-                  ),
+                          onTap: () {
+                            if (emailController.text.isEmpty ||
+                                passController.text.isEmpty) {
+                              showError(context, "Email and password required");
+                              return;
+                            }
+                            context.read<AuthCubit>().login(
+                              emailController.text.trim(),
+                              passController.text.trim(),
+                            );
+                          },
+                          text: 'SIGN IN',
+                        ),
                 ),
                 SizedBox(height: 15),
                 Row(

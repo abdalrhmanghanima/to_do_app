@@ -12,7 +12,6 @@ class AuthGate extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-
         if (state is AuthLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -22,7 +21,7 @@ class AuthGate extends StatelessWidget {
         if (state is Authenticated) {
           return const HomeScreen();
         }
-
+        print(state);
         return const SignInScreen();
       },
     );

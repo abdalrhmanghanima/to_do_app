@@ -55,15 +55,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
           if (state is Authenticated) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.homeScreen,
-                  (route) => false,
-            );
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.homeScreen, (route) => false);
           }
         },
         builder: (context, state) {
@@ -122,42 +121,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: state is AuthLoading
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
-                    onTap: () {
+                          onTap: () {
+                            if (emailController.text.trim().isEmpty ||
+                                nameController.text.trim().isEmpty ||
+                                passController.text.trim().isEmpty ||
+                                confirmPassController.text.trim().isEmpty) {
+                              showError(context, "All fields are required");
+                              return;
+                            }
 
-                      if (emailController.text.trim().isEmpty ||
-                          nameController.text.trim().isEmpty ||
-                          passController.text.trim().isEmpty ||
-                          confirmPassController.text.trim().isEmpty) {
+                            if (!emailController.text.contains("@")) {
+                              showError(context, "Enter a valid email");
+                              return;
+                            }
 
-                        showError(context, "All fields are required");
-                        return;
-                      }
+                            if (passController.text.length < 6) {
+                              showError(
+                                context,
+                                "Password must be at least 6 characters",
+                              );
+                              return;
+                            }
 
-                      if (!emailController.text.contains("@")) {
-                        showError(context, "Enter a valid email");
-                        return;
-                      }
+                            if (passController.text !=
+                                confirmPassController.text) {
+                              showError(context, "Passwords do not match");
+                              return;
+                            }
 
-                      if (passController.text.length < 6) {
-                        showError(context, "Password must be at least 6 characters");
-                        return;
-                      }
+                            context.read<AuthCubit>().signUp(
+                              nameController.text.trim(),
+                              emailController.text.trim(),
+                              passController.text.trim(),
+                            );
+                          },
 
-                      if (passController.text != confirmPassController.text) {
-                        showError(context, "Passwords do not match");
-                        return;
-                      }
-
-                      context.read<AuthCubit>().signUp(
-                        nameController.text.trim(),
-                        emailController.text.trim(),
-                        passController.text.trim(),
-                      );
-                    },
-
-
-                    text: 'SIGN UP',
-                  ),
+                          text: 'SIGN UP',
+                        ),
                 ),
 
                 SizedBox(height: 15),
@@ -195,15 +195,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
 void showError(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
       backgroundColor: Colors.redAccent,
       behavior: SnackBarBehavior.floating,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
   );
 }

@@ -1,4 +1,3 @@
-
 import 'package:to_do_app/domain/auth/entities/user_entity.dart';
 
 abstract class AuthState {}
