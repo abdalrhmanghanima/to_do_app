@@ -16,6 +16,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   injectable: ^2.7.1+4
   get_it: ^9.2.0
+  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:

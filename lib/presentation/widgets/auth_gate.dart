@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_app/presentation/auth/cubit/auth_cubit.dart';
 import 'package:to_do_app/presentation/auth/cubit/auth_state.dart';
 import 'package:to_do_app/presentation/auth/screens/sign_in_screen.dart';
-import 'package:to_do_app/presentation/screens/home_screen.dart';
+import 'package:to_do_app/presentation/home/screens/home_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});

@@ -10,6 +10,7 @@ final sl = GetIt.instance;
 Future<void> configureDependencies() async {
   await sl.init();
 }
+
 @module
 abstract class RegisterModule {
 

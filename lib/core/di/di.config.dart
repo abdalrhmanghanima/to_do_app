@@ -19,8 +19,15 @@ import 'package:to_do_app/data/auth/data_source/auth_remote_data_source.dart'
 import 'package:to_do_app/data/auth/data_source/auth_remote_data_source_impl.dart'
     as _i570;
 import 'package:to_do_app/data/auth/repositories/auth_repo_impl.dart' as _i671;
+import 'package:to_do_app/data/home/data_source/todo_remote_data_source.dart'
+    as _i703;
+import 'package:to_do_app/data/home/data_source/todo_remote_data_source_impl.dart'
+    as _i1070;
+import 'package:to_do_app/data/home/repositories/todo_repo_impl.dart' as _i177;
 import 'package:to_do_app/domain/auth/repositories/auth_repo.dart' as _i1051;
+import 'package:to_do_app/domain/home/repositories/todo_repo.dart' as _i599;
 import 'package:to_do_app/presentation/auth/cubit/auth_cubit.dart' as _i181;
+import 'package:to_do_app/presentation/home/cubit/to_do_cubit.dart' as _i362;
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
@@ -43,6 +50,18 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i181.AuthCubit>(
       () => _i181.AuthCubit(gh<_i1051.AuthRepository>()),
+    );
+    gh.lazySingleton<_i703.TodoRemoteDataSource>(
+      () => _i1070.TodoRemoteDataSourceImpl(
+        gh<_i974.FirebaseFirestore>(),
+        gh<_i59.FirebaseAuth>(),
+      ),
+    );
+    gh.lazySingleton<_i599.TodoRepository>(
+      () => _i177.TodoRepositoryImpl(gh<_i703.TodoRemoteDataSource>()),
+    );
+    gh.factory<_i362.TodoCubit>(
+      () => _i362.TodoCubit(gh<_i599.TodoRepository>()),
     );
     return this;
   }

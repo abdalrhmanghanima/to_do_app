@@ -6,8 +6,10 @@ import 'package:to_do_app/core/routing/app_routes.dart';
 import 'package:to_do_app/firebase_options.dart';
 import 'package:to_do_app/presentation/auth/cubit/auth_cubit.dart';
 import 'package:to_do_app/presentation/auth/screens/sign_up_screen.dart';
-import 'package:to_do_app/presentation/screens/home_screen.dart';
+import 'package:to_do_app/presentation/home/cubit/to_do_cubit.dart';
+import 'package:to_do_app/presentation/home/screens/home_screen.dart';
 import 'package:to_do_app/presentation/auth/screens/sign_in_screen.dart';
+import 'package:to_do_app/presentation/to_do_details/todo_detail_screen.dart';
 import 'package:to_do_app/presentation/widgets/auth_gate.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +29,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AuthCubit>()..listenToAuthChanges(),
+    return MultiBlocProvider(
+      providers: [
+
+        BlocProvider(
+          create: (_) => sl<AuthCubit>()..listenToAuthChanges(),
+        ),
+
+        BlocProvider(
+          create: (_) => sl<TodoCubit>()..listenToTodos(),
+        ),
+
+      ],
+
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
 
@@ -36,13 +49,13 @@ class MyApp extends StatelessWidget {
           AppRoutes.signUp: (_) => const SignUpScreen(),
           AppRoutes.signIn: (_) => const SignInScreen(),
           AppRoutes.homeScreen: (_) => const HomeScreen(),
+          AppRoutes.todoDetail: (_) => const TodoDetailScreen(),
         },
 
         home: const AuthGate(),
-
-      )
-
+      ),
     );
   }
 }
+
 
