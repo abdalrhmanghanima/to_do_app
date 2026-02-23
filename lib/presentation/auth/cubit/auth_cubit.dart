@@ -1,91 +1,90 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:injectable/injectable.dart';
-import 'package:to_do_app/domain/auth/repositories/auth_repo.dart';
-import 'package:to_do_app/presentation/auth/cubit/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:to_do_app/domain/auth/use_cases/auth_state_changes_use_case.dart';
+import 'package:to_do_app/domain/auth/use_cases/logout_use_case.dart';
+import 'package:to_do_app/domain/auth/use_cases/signIn_use_case.dart';
+import 'package:to_do_app/domain/auth/use_cases/sign_in_with_google_use_case.dart';
+import 'package:to_do_app/domain/auth/use_cases/signup_use_case.dart';
+import 'package:to_do_app/presentation/auth/cubit/auth_state.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepository repository;
+  final SignInUseCase signInUseCase;
+  final SignUpUseCase signUpUseCase;
+  final LogoutUseCase logoutUseCase;
+  final AuthStateChangesUseCase authStateChangesUseCase;
+  final SignInWithGoogleUseCase signInWithGoogleUseCase;
 
-  AuthCubit(this.repository) : super(AuthInitial());
+  AuthCubit(
+      this.signInUseCase,
+      this.signUpUseCase,
+      this.logoutUseCase,
+      this.authStateChangesUseCase, this.signInWithGoogleUseCase,
+      ) : super(AuthInitial());
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
     try {
-      final user = await repository.login(email, password);
+      final user = await signInUseCase(email, password);
       emit(Authenticated(user));
     } catch (e) {
-      String message = "Something went wrong";
-
-      if (e is FirebaseAuthException) {
-        if (e.code == 'user-not-found') {
-          message = "No user found with this email";
-        } else if (e.code == 'wrong-password') {
-          message = "Wrong password";
-        } else if (e.code == 'email-already-in-use') {
-          message = "Email already exists";
-        } else if (e.code == 'weak-password') {
-          message = "Password is too weak";
-        }
-      }
-
-      emit(AuthError(message));
+      emit(AuthError(_mapError(e)));
     }
   }
 
   Future<void> signUp(String name, String email, String password) async {
     emit(AuthLoading());
-
     try {
-      final user = await repository.signUp(name, email, password);
-
+      final user = await signUpUseCase(name, email, password);
       emit(Authenticated(user));
     } catch (e) {
-      String message = "Something went wrong";
-
-      if (e is FirebaseAuthException) {
-        switch (e.code) {
-          case 'email-already-in-use':
-            message = "Email already exists";
-            break;
-
-          case 'weak-password':
-            message = "Password is too weak";
-            break;
-
-          case 'user-not-found':
-            message = "No user found with this email";
-            break;
-
-          case 'wrong-password':
-            message = "Wrong password";
-            break;
-
-          case 'invalid-email':
-            message = "Invalid email format";
-            break;
-
-          default:
-            message = e.message ?? "Authentication failed";
-        }
-      }
-
-      emit(AuthError(message));
+      emit(AuthError(_mapError(e)));
     }
   }
 
   Future<void> logout() async {
-    await repository.logout();
+    await logoutUseCase();
+    emit(Unauthenticated());
   }
 
   void listenToAuthChanges() {
-    repository.authStateChanges().listen((user) {
+    authStateChangesUseCase().listen((user) {
       if (user != null) {
         emit(Authenticated(user));
       } else {
         emit(Unauthenticated());
       }
     });
+  }
+  Future<void> signInWithGoogle() async {
+    emit(AuthLoading());
+    try {
+      final user = await signInWithGoogleUseCase();
+      emit(Authenticated(user));
+    } catch (e) {
+      print("GOOGLE ERROR: $e"); // 🔥 مهم
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  String _mapError(Object e) {
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'user-not-found':
+          return "No user found with this email";
+        case 'wrong-password':
+          return "Wrong password";
+        case 'email-already-in-use':
+          return "Email already exists";
+        case 'weak-password':
+          return "Password is too weak";
+        case 'invalid-email':
+          return "Invalid email format";
+        default:
+          return e.message ?? "Authentication failed";
+      }
+    }
+    return "Something went wrong";
   }
 }

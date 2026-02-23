@@ -20,47 +20,26 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
       appBar: AppBar(
         backgroundColor: AppColors.primary,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 24),
-            child: Row(
-              children: [
-                Text(
-                  'Eng',
-                  style: TextStyle(
-                    color: AppColors.pink,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_forward_ios_outlined,
-                  color: AppColors.pink,
-                  size: 18,
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
           }
+
           if (state is Authenticated) {
-            Navigator.of(
-              context,
-            ).pushNamedAndRemoveUntil(AppRoutes.homeScreen, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRoutes.homeScreen,
+                  (route) => false,
+            );
           }
         },
         builder: (context, state) {
@@ -68,10 +47,14 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
                 Center(child: SvgPicture.asset(AppIcons.toDoList)),
+
                 SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+
+                /// ================= EMAIL FIELD =================
                 Padding(
-                  padding: const EdgeInsets.only(right: 18, left: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: CustomTextField(
                     hint: 'Email',
                     isPassword: false,
@@ -80,9 +63,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     textInputAction: TextInputAction.next,
                   ),
                 ),
-                SizedBox(height: 16),
+
+                const SizedBox(height: 16),
+
+                /// ================= PASSWORD FIELD =================
                 Padding(
-                  padding: const EdgeInsets.only(right: 18, left: 18),
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: CustomTextField(
                     hint: 'Password',
                     isPassword: true,
@@ -91,44 +77,70 @@ class _SignInScreenState extends State<SignInScreen> {
                     textInputAction: TextInputAction.done,
                   ),
                 ),
-                SizedBox(height: 13),
-                Padding(
-                  padding: const EdgeInsets.only(right: 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          color: AppColors.gray,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15),
+
+                const SizedBox(height: 20),
+
+                /// ================= EMAIL LOGIN BUTTON =================
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
                   child: state is AuthLoading
                       ? const Center(child: CircularProgressIndicator())
                       : CustomButton(
-                          onTap: () {
-                            if (emailController.text.isEmpty ||
-                                passController.text.isEmpty) {
-                              showError(context, "Email and password required");
-                              return;
-                            }
-                            context.read<AuthCubit>().login(
-                              emailController.text.trim(),
-                              passController.text.trim(),
-                            );
-                          },
-                          text: 'SIGN IN',
-                        ),
+                    onTap: () {
+                      if (emailController.text.isEmpty ||
+                          passController.text.isEmpty) {
+                        showError(
+                            context, "Email and password required");
+                        return;
+                      }
+
+                      context.read<AuthCubit>().login(
+                        emailController.text.trim(),
+                        passController.text.trim(),
+                      );
+                    },
+                    text: 'SIGN IN',
+                  ),
                 ),
-                SizedBox(height: 15),
+
+                const SizedBox(height: 25),
+
+                /// ================= ADDED: Divider =================
+                /// ✨ جديد: خط فاصل بين العادي وجوجل
+                Row(
+                  children: [
+                    const Expanded(child: Divider(color: Colors.grey)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        "OR",
+                        style: TextStyle(color: AppColors.gray),
+                      ),
+                    ),
+                    const Expanded(child: Divider(color: Colors.grey)),
+                  ],
+                ),
+
+                const SizedBox(height: 25),
+
+                /// ================= ADDED: GOOGLE SIGN IN BUTTON =================
+                /// ✨ جديد: زرار تسجيل الدخول بجوجل
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 35),
+                  child: state is AuthLoading
+                      ? const SizedBox()
+                      : CustomButton(
+                    onTap: () {
+                      /// ✨ جديد: استدعاء Google Sign In من الكيوبيت
+                      context.read<AuthCubit>().signInWithGoogle();
+                    },
+                    text: 'Sign in with Google',
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                /// ================= SIGN UP =================
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

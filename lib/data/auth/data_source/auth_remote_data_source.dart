@@ -8,4 +8,5 @@ abstract class AuthRemoteDataSource {
   Future<void> logout();
 
   Stream<UserModel?> authStateChanges();
+  Future<UserModel> signInWithGoogle();
 }
