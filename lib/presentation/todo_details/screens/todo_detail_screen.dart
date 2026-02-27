@@ -36,7 +36,13 @@ class TodoDetailScreen extends StatelessWidget {
         final data = snapshot.data!.data() as Map<String, dynamic>?;
 
         if (data == null) {
-          return const Scaffold(body: Center(child: Text("Todo deleted")));
+          Future.microtask(() {
+            Navigator.pop(context);
+          });
+
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
 
         final updatedTodo = TodoModel.fromJson(data, todo.id);
@@ -87,12 +93,11 @@ class TodoDetailScreen extends StatelessWidget {
                           barrierColor: Colors.black.withOpacity(0.4),
                           backgroundColor: Colors.transparent,
                           builder: (sheetContext) => DeleteTodoBottomSheet(
-                            onDelete: () {
-                              context.read<TodoCubit>().deleteTodo(
+                            onDelete: () async {
+                              await context.read<TodoCubit>().deleteTodo(
                                 updatedTodo.id,
                               );
                               Navigator.pop(sheetContext);
-                              Navigator.pop(context);
                             },
                           ),
                         );
@@ -133,11 +138,32 @@ class TodoDetailScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.02),
-                  Center(
-                    child: Text(
-                      "Created at ${formatDate(updatedTodo.createdAt)}",
-                      style: TextStyle(fontSize: size.width * 0.035),
-                    ),
+                  Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          "Created at ${formatDate(updatedTodo.createdAt)}",
+                          style: TextStyle(fontSize: size.width * 0.035),
+                        ),
+                      ),
+
+                      SizedBox(height: size.height * 0.01),
+
+                      if (updatedTodo.deadline != null)
+                        Center(
+                          child: Text(
+                            "Deadline ${formatDate(updatedTodo.deadline!)}",
+                            style: TextStyle(
+                              fontSize: size.width * 0.035,
+                              fontWeight: FontWeight.w600,
+                              color:
+                                  updatedTodo.deadline!.isBefore(DateTime.now())
+                                  ? Colors.redAccent
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ],
               ),

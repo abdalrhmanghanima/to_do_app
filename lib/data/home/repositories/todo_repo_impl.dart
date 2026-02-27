@@ -10,8 +10,8 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this.remote);
 
   @override
-  Future<void> addTodo(String title, String description) {
-    return remote.addTodo(title, description);
+  Future<void> addTodo(String title, String description,DateTime? deadLine) {
+    return remote.addTodo(title, description,deadLine);
   }
 
   @override

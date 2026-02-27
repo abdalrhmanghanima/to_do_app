@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Container(
                                   width: double.infinity,
-                                  height: size.height * 0.16,
                                   decoration: BoxDecoration(
                                     color: AppColors.pink,
                                     borderRadius: BorderRadius.circular(14),
@@ -82,22 +81,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: size.width * 0.04,
-                                      vertical: size.height * 0.01,
+                                      vertical: size.height * 0.015,
                                     ),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              todo.title,
-                                              style: TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: size.width * 0.04,
-                                                fontWeight: FontWeight.w600,
+                                            Expanded(
+                                              child: Text(
+                                                todo.title,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  color: AppColors.white,
+                                                  fontSize: size.width * 0.045,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                               ),
                                             ),
                                             SvgPicture.asset(
@@ -109,23 +110,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SizedBox(height: size.height * 0.01),
                                         Text(
                                           todo.description,
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: AppColors.white,
                                             fontSize: size.width * 0.035,
                                           ),
                                         ),
-                                        Spacer(),
+                                        SizedBox(height: size.height * 0.015),
                                         Text(
-                                          "Created at ${formatDate(todo.createdAt)}",
+                                          todo.deadline != null
+                                              ? "Deadline ${formatDate(todo.deadline!)}"
+                                              : "No deadline",
                                           style: TextStyle(
-                                            color: AppColors.white,
+                                            color: todo.deadline != null
+                                                ? Colors.white
+                                                : Colors.white.withOpacity(0.7),
                                             fontSize: size.width * 0.03,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
+                                )
                               ),
                             );
                           },

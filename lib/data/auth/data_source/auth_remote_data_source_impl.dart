@@ -57,20 +57,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> signInWithGoogle() async {
 
-    // يبدأ عملية تسجيل الدخول
     final GoogleSignInAccount googleUser =
     await googleSignIn.authenticate();
 
-    // يجيب الـ idToken
     final GoogleSignInAuthentication googleAuth =
         googleUser.authentication;
 
-    // إنشاء Firebase credential
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
     );
 
-    // تسجيل الدخول في Firebase
     final userCredential =
     await firebaseAuth.signInWithCredential(credential);
 

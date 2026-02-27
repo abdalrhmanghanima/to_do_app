@@ -138,7 +138,11 @@ class _AddTodoBottomSheetState extends State<AddTodoBottomSheet> {
                       return;
                     }
 
-                    context.read<TodoCubit>().addTodo(title, desc);
+                    context.read<TodoCubit>().addTodo(
+                      title,
+                      desc,
+                      selectedDate,
+                    );
 
                     Navigator.pop(context);
                   },

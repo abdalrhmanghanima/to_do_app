@@ -15,8 +15,8 @@ class TodoCubit extends Cubit<List<TodoModel>> {
     });
   }
 
-  Future<void> addTodo(String title, String description) async {
-    await repository.addTodo(title, description);
+  Future<void> addTodo(String title, String description, DateTime? deadLine) async {
+    await repository.addTodo(title, description,deadLine);
   }
 
   Future<void> deleteTodo(String id) async {

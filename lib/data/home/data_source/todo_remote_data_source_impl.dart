@@ -14,11 +14,18 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
   String get uid => firebaseAuth.currentUser!.uid;
 
   @override
-  Future<void> addTodo(String title, String description) async {
+  Future<void> addTodo(
+      String title,
+      String description,
+      DateTime? deadline,
+      ) async {
     await firestore.collection('users').doc(uid).collection('tasks').add({
       'title': title,
       'description': description,
       'createdAt': FieldValue.serverTimestamp(),
+      'deadline': deadline != null
+          ? Timestamp.fromDate(deadline)
+          : null,
     });
   }
 

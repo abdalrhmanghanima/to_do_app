@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:to_do_app/core/di/di.dart';
 import 'package:to_do_app/core/routing/app_routes.dart';
-import 'package:to_do_app/firebase_options.dart';
 import 'package:to_do_app/presentation/auth/cubit/auth_cubit.dart';
 import 'package:to_do_app/presentation/auth/screens/sign_up_screen.dart';
 import 'package:to_do_app/presentation/home/cubit/to_do_cubit.dart';
