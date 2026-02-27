@@ -1,7 +1,7 @@
 # ✅ ToDo App – Clean Architecture Flutter Application
 
 <p align="center">
-  <img src="assets/icons/app_icon.png" width="120"/>
+  <img src="assets/icons/app-logo.svg" width="120"/>
 </p>
 
 ## 📌 Overview
@@ -210,9 +210,7 @@ flutter run
 ## 🔮 Future Improvements
 
 - Unit & Widget Testing
-- Dark Mode
 - Task Categories / Filtering
-- Offline Support
 - Push Notifications
 
 ---
