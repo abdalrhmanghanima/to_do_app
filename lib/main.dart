@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:to_do_app/firebase_options.dart';
 import 'package:to_do_app/core/di/di.dart';
 import 'package:to_do_app/core/routing/app_routes.dart';
 import 'package:to_do_app/presentation/auth/cubit/auth_cubit.dart';
@@ -17,13 +17,8 @@ import 'package:to_do_app/presentation/widgets/auth_gate.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  final google = GoogleSignIn.instance;
-  await google.initialize(
-    serverClientId:
-    '846932115430-jlbaq5dbg5luartu7g4uondiu2di8bn.apps.googleusercontent.com',
-  );
   await configureDependencies();
 
   runApp(const MyApp());

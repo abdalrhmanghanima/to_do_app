@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:to_do_app/data/home/data_source/todo_remote_data_source.dart';
 import 'package:to_do_app/data/home/model/to_do_model.dart';
@@ -15,17 +16,16 @@ class TodoRemoteDataSourceImpl implements TodoRemoteDataSource {
 
   @override
   Future<void> addTodo(
-      String title,
-      String description,
-      DateTime? deadline,
-      ) async {
+    String title,
+    String description,
+    DateTime? deadline,
+    XFile? image,
+  ) async {
     await firestore.collection('users').doc(uid).collection('tasks').add({
       'title': title,
       'description': description,
       'createdAt': FieldValue.serverTimestamp(),
-      'deadline': deadline != null
-          ? Timestamp.fromDate(deadline)
-          : null,
+      'deadline': deadline != null ? Timestamp.fromDate(deadline) : null,
     });
   }
 

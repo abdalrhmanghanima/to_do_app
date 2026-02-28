@@ -10,6 +10,7 @@ class AppIcons {
   static const String clockDark = 'assets/icons/clock_dark.svg';
   static const String calender = 'assets/icons/calendar.svg';
   static const String image = 'assets/icons/image.svg';
+  static const String google = 'assets/icons/google.svg';
 }
 
 class AppImages {

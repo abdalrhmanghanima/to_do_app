@@ -11,9 +11,9 @@ final sl = GetIt.instance;
 Future<void> configureDependencies() async {
   await sl.init();
 }
+
 @module
 abstract class RegisterModule {
-
   @lazySingleton
   FirebaseAuth get firebaseAuth => FirebaseAuth.instance;
 
@@ -21,5 +21,5 @@ abstract class RegisterModule {
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
   @lazySingleton
-  GoogleSignIn get googleSignIn => GoogleSignIn.instance;
+  GoogleSignIn get googleSignIn => GoogleSignIn();
 }

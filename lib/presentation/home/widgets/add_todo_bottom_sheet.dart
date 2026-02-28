@@ -127,7 +127,7 @@ class _AddTodoBottomSheetState extends State<AddTodoBottomSheet> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     final title = titleController.text.trim();
                     final desc = descController.text.trim();
 
@@ -138,10 +138,11 @@ class _AddTodoBottomSheetState extends State<AddTodoBottomSheet> {
                       return;
                     }
 
-                    context.read<TodoCubit>().addTodo(
+                    await context.read<TodoCubit>().addTodo(
                       title,
                       desc,
                       selectedDate,
+                      selectedImage,
                     );
 
                     Navigator.pop(context);

@@ -28,6 +28,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> logout() {
     return remote.logout();
   }
+
   @override
   Future<UserEntity> signInWithGoogle() {
     return remote.signInWithGoogle();

@@ -11,7 +11,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseFirestore firestore;
   final GoogleSignIn googleSignIn;
 
-  AuthRemoteDataSourceImpl(this.firebaseAuth, this.firestore, this.googleSignIn);
+  AuthRemoteDataSourceImpl(
+    this.firebaseAuth,
+    this.firestore,
+    this.googleSignIn,
+  );
 
   @override
   Future<UserModel> signUp(String name, String email, String password) async {
@@ -54,22 +58,35 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       (user) => user != null ? UserModel.fromFirebase(user) : null,
     );
   }
+
   @override
   Future<UserModel> signInWithGoogle() async {
+    // Start Google Sign-In flow
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-    final GoogleSignInAccount googleUser =
-    await googleSignIn.authenticate();
+    // User aborted the sign-in flow
+    if (googleUser == null) {
+      throw Exception('SIGN_IN_ABORTED_BY_USER');
+    }
 
     final GoogleSignInAuthentication googleAuth =
-        googleUser.authentication;
+        await googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
+      accessToken: googleAuth.accessToken,
     );
 
-    final userCredential =
-    await firebaseAuth.signInWithCredential(credential);
+    final userCredential = await firebaseAuth.signInWithCredential(credential);
 
-    return UserModel.fromFirebase(userCredential.user!);
+    final user = userCredential.user;
+    if (user == null) {
+      throw FirebaseAuthException(
+        code: 'user-null',
+        message: 'Failed to retrieve user from Google sign-in.',
+      );
+    }
+
+    return UserModel.fromFirebase(user);
   }
 }

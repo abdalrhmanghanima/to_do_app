@@ -113,8 +113,7 @@ class ProfileScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 context.read<AuthCubit>().logout();
-
-                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushNamed(context, AppRoutes.signIn);
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25),

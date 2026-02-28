@@ -5,14 +5,14 @@ class TodoModel {
   final String title;
   final String description;
   final DateTime createdAt;
-  final DateTime? deadline; // 👈 جديد
+  final DateTime? deadline;
 
   TodoModel({
     required this.id,
     required this.title,
     required this.description,
     required this.createdAt,
-    this.deadline, // 👈 جديد
+    this.deadline,
   });
 
   factory TodoModel.fromJson(Map<String, dynamic> json, String id) {
@@ -23,7 +23,7 @@ class TodoModel {
       createdAt: (json['createdAt'] as Timestamp).toDate(),
       deadline: json['deadline'] != null
           ? (json['deadline'] as Timestamp).toDate()
-          : null, // 👈 جديد
+          : null,
     );
   }
 
@@ -32,9 +32,7 @@ class TodoModel {
       'title': title,
       'description': description,
       'createdAt': FieldValue.serverTimestamp(),
-      'deadline': deadline != null
-          ? Timestamp.fromDate(deadline!)
-          : null, // 👈 جديد
+      'deadline': deadline != null ? Timestamp.fromDate(deadline!) : null,
     };
   }
 }

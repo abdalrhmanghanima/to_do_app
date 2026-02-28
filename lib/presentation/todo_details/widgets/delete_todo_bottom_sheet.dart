@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_app/core/routing/app_routes.dart';
 import 'package:to_do_app/core/utils/app_colors.dart';
 
 class DeleteTodoBottomSheet extends StatelessWidget {
@@ -22,7 +23,7 @@ class DeleteTodoBottomSheet extends StatelessWidget {
             ),
             child: Center(
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   onDelete();
                   Navigator.pop(context);
                 },

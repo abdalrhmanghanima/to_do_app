@@ -1,7 +1,13 @@
+import 'package:cross_file/src/types/interface.dart';
 import 'package:to_do_app/data/home/model/to_do_model.dart';
 
 abstract class TodoRepository {
-  Future<void> addTodo(String title, String description,DateTime? deadLine);
+  Future<void> addTodo(
+    String title,
+    String description,
+    DateTime? deadLine,
+    XFile? image,
+  );
   Stream<List<TodoModel>> getTodos();
   Future<void> deleteTodo(String id);
   Future<void> updateTodo(

@@ -17,11 +17,12 @@ class AuthCubit extends Cubit<AuthState> {
   final SignInWithGoogleUseCase signInWithGoogleUseCase;
 
   AuthCubit(
-      this.signInUseCase,
-      this.signUpUseCase,
-      this.logoutUseCase,
-      this.authStateChangesUseCase, this.signInWithGoogleUseCase,
-      ) : super(AuthInitial());
+    this.signInUseCase,
+    this.signUpUseCase,
+    this.logoutUseCase,
+    this.authStateChangesUseCase,
+    this.signInWithGoogleUseCase,
+  ) : super(AuthInitial());
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
@@ -57,14 +58,20 @@ class AuthCubit extends Cubit<AuthState> {
       }
     });
   }
+
   Future<void> signInWithGoogle() async {
     emit(AuthLoading());
     try {
       final user = await signInWithGoogleUseCase();
       emit(Authenticated(user));
     } catch (e) {
-      print("GOOGLE ERROR: $e"); // 🔥 مهم
-      emit(AuthError(e.toString()));
+      // User explicitly aborted Google sign-in: do not show an error
+      if (e.toString().contains('SIGN_IN_ABORTED_BY_USER')) {
+        emit(Unauthenticated());
+        return;
+      }
+
+      emit(AuthError(_mapError(e)));
     }
   }
 

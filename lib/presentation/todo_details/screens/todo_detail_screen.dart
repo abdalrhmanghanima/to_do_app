@@ -40,9 +40,7 @@ class TodoDetailScreen extends StatelessWidget {
             Navigator.pop(context);
           });
 
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const Scaffold(body: SizedBox());
         }
 
         final updatedTodo = TodoModel.fromJson(data, todo.id);
@@ -97,7 +95,6 @@ class TodoDetailScreen extends StatelessWidget {
                               await context.read<TodoCubit>().deleteTodo(
                                 updatedTodo.id,
                               );
-                              Navigator.pop(sheetContext);
                             },
                           ),
                         );

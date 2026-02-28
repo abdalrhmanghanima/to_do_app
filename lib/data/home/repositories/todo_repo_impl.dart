@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:to_do_app/data/home/data_source/todo_remote_data_source.dart';
 import 'package:to_do_app/data/home/model/to_do_model.dart';
@@ -10,8 +11,13 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this.remote);
 
   @override
-  Future<void> addTodo(String title, String description,DateTime? deadLine) {
-    return remote.addTodo(title, description,deadLine);
+  Future<void> addTodo(
+    String title,
+    String description,
+    DateTime? deadLine,
+    XFile? image,
+  ) {
+    return remote.addTodo(title, description, deadLine, image!);
   }
 
   @override

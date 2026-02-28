@@ -117,14 +117,38 @@ class _SignInScreenState extends State<SignInScreen> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
-                  child: state is AuthLoading
-                      ? const SizedBox()
-                      : CustomButton(
-                          onTap: () {
-                            context.read<AuthCubit>().signInWithGoogle();
-                          },
-                          text: 'Sign in with Google',
+                  child: Material(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(30),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(30),
+                      onTap: () {
+                        context.read<AuthCubit>().signInWithGoogle();
+                      },
+                      child: Container(
+                        height: 55,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.pink, width: 1.5),
                         ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(AppIcons.google, height: 24),
+                            const SizedBox(width: 12),
+                            const Text(
+                              "Sign In With Google",
+                              style: TextStyle(
+                                color: AppColors.pink,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 20),
